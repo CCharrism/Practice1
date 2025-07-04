@@ -1,0 +1,12 @@
+<div class="hero-section">
+  <h1 class="title">Let's Make Friends and Socialize</h1>
+
+  <div class="buttons">
+    <button class="btn learn-more">Learn More</button>
+    <button class="btn register-btn" (click)="toggleRegister()">Register</button>
+  </div>
+
+  <div *ngIf="showRegister" class="register-container">
+    <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+  </div>
+</div>
