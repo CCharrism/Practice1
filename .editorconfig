@@ -2,3 +2,6 @@
 
 # CS9113: Parameter is unread.
 dotnet_diagnostic.CS9113.severity = silent
+
+# CS8604: Possible null reference argument.
+dotnet_diagnostic.CS8604.severity = none
