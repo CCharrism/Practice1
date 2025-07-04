@@ -1,33 +1,19 @@
+using System.Text;
 using API.Data;
+using API.Extentions;
+using API.Interfaces;
+using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddDbContext<DataContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-// Add CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularApp",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
-
-
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddScoped<ITokenService, TokenService>();
 var app = builder.Build();
-
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
-// Use CORS
 app.UseCors("AllowAngularApp");
-
 app.Run();
