@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { User } from '../models/user';
 export class Account {
 
   http = inject(HttpClient);
+  router = inject(Router);
   currentUser=signal<User | null>(null);
  
   baseUrl = 'https://localhost:5001/api/';
@@ -41,5 +43,6 @@ export class Account {
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    this.router.navigate(['/']);
   }
 }

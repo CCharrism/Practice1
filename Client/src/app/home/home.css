@@ -20,6 +20,14 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Subtitle for logged-in users */
+.subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 30px;
+  font-weight: 400;
+}
+
 /* Buttons container */
 .buttons {
   display: flex;

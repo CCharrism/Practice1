@@ -139,3 +139,13 @@
 .navbar-nav .nav-link:hover::after {
   width: 100%;
 }
+
+/* Active nav link styles */
+.nav-link.active {
+  color: #007bff !important;
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}

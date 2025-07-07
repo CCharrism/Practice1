@@ -1,12 +1,24 @@
 <div class="hero-section">
-  <h1 class="title">Let's Make Friends and Socialize</h1>
+  @if(!accountService.currentUser()) {
+    <h1 class="title">Let's Make Friends and Socialize</h1>
 
-  <div class="buttons">
-    <button class="btn learn-more">Learn More</button>
-    <button class="btn register-btn" (click)="toggleRegister()">Register</button>
-  </div>
+    <div class="buttons">
+      <button class="btn learn-more">Learn More</button>
+      <button class="btn register-btn" (click)="toggleRegister()">Register</button>
+    </div>
 
-  <div *ngIf="showRegister" class="register-container">
-    <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
-  </div>
+    <div *ngIf="showRegister" class="register-container">
+      <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+    </div>
+  }
+  
+  @if(accountService.currentUser()) {
+    <h1 class="title">Welcome back, {{accountService.currentUser()?.username}}!</h1>
+    <p class="subtitle">What would you like to do today?</p>
+    
+    <div class="buttons">
+      <button class="btn learn-more" routerLink="/members">Browse Matches</button>
+      <button class="btn register-btn" routerLink="/messages">View Messages</button>
+    </div>
+  }
 </div>
