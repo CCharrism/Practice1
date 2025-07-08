@@ -1,0 +1,40 @@
+<div class="member-card">
+  <!-- Status Indicator -->
+  <div class="status-indicator" title="Online"></div>
+  
+  <!-- Premium Badge -->
+  <div class="premium-badge"></div>
+  
+  <!-- Image Container -->
+  <div class="image-container">
+    <img 
+      [src]="member.photoUrl || '/assets/user.png'" 
+      [alt]="member.knownAs"
+      class="member-image"
+      loading="lazy"
+    >
+    <div class="image-overlay"></div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn add-friend-btn" title="Add Friend" (click)="addFriend()">
+        <i class="fas fa-user-plus"></i>
+      </button>
+      <button class="action-btn heart-btn" title="Like" (click)="toggleLike()">
+        <i class="fas fa-heart"></i>
+      </button>
+      <button class="action-btn message-btn" title="Send Message" (click)="sendMessage()">
+        <i class="fas fa-comment"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Member Info -->
+  <div class="member-info">
+    <h3 class="member-name">{{member.knownAs}}</h3>
+    <div class="member-details">
+      <span class="member-age">{{member.age}}</span>
+      <span class="member-location">{{member.city}}</span>
+    </div>
+  </div>
+</div>
