@@ -13,34 +13,36 @@ namespace API.Controllers;
 public class AccountController(DataContext context, ITokenService tokenService) : BaseApiController
 {
     [HttpPost("register")]
-    // public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
-    // {
-    //     // if (await UserExists(registerDto.Username))
-    //     // {
-    //     //     return BadRequest("Username is taken");
-    //     // }
-    //     // using var hmac = new HMACSHA512();
+    public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+    {
+        if (await UserExists(registerDto.Username))
+        {
+            return BadRequest("Username is taken");
+        }
+        
+        using var hmac = new HMACSHA512();
 
+        var user = new AppUser
+        {
+            UserName = registerDto.Username.ToLower(),
+            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+            PasswordSalt = hmac.Key,
+            DateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-18)), // Default to 18 years old
+            KnownAs = registerDto.Username,
+            Gender = "Not specified",
+            City = "Not specified",
+            Country = "Not specified"
+        };
 
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
 
-    //     // var user = new AppUser
-    //     // {
-    //     //     UserName = registerDto.Username.ToLower(),
-    //     //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-    //     //     PasswordSalt = hmac.Key
-    //     // };
-
-    //     // context.Users.Add(user);
-    //     // await context.SaveChangesAsync();
-
-    //     // return new UserDto
-    //     // {
-    //     //     Username = user.UserName,
-    //     //     Token = tokenService.CreateToken(user)
-    //     // };
-
-
-    // }
+        return new UserDto
+        {
+            Username = user.UserName,
+            Token = tokenService.CreateToken(user)
+        };
+    }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
