@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-members-card',
@@ -8,6 +9,13 @@ import { Component, Input } from '@angular/core';
 })
 export class MembersCard {
    @Input() member: any
+   
+   constructor(private router: Router) {}
+
+   viewProfile() {
+     console.log('Navigating to profile:', this.member.userName);
+     this.router.navigate(['/members', this.member.userName]);
+   }
 
    addFriend() {
      console.log('Add friend:', this.member.knownAs);

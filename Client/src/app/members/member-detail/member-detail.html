@@ -1,1 +1,238 @@
-<p>member-detail works!</p>
+<div class="member-detail-container" *ngIf="member">
+  <!-- Hero Section with Background -->
+  <div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Members</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Left Sidebar - Profile Card (35%) -->
+    <div class="profile-sidebar">
+      <div class="profile-card">
+        <!-- Profile Image -->
+        <div class="profile-image-container">
+          <img 
+            [src]="member.photoUrl || '/user.png'" 
+            [alt]="member.knownAs"
+            class="profile-image"
+          >
+          <div class="status-indicator online"></div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="profile-info">
+          <h1 class="profile-name">{{member.knownAs}}</h1>
+          <p class="profile-age">{{member.age}} years old</p>
+          
+          <!-- Location -->
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{member.city}}<span *ngIf="member.country">, {{member.country}}</span></span>
+          </div>
+
+          <!-- Last Active -->
+          <div class="info-item">
+            <i class="fas fa-clock"></i>
+            <span>Active {{member.lastActive | date:'short'}}</span>
+          </div>
+
+          <!-- Member Since -->
+          <div class="info-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Member since {{member.created | date:'MMM yyyy'}}</span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn btn-primary">
+              <i class="fas fa-heart"></i>
+              Like
+            </button>
+            <button class="btn btn-secondary">
+              <i class="fas fa-comment"></i>
+              Message
+            </button>
+            <button class="btn btn-outline">
+              <i class="fas fa-share"></i>
+              Share
+            </button>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="quick-stats">
+            <div class="stat-item">
+              <span class="stat-number">{{member.photos.length || 0}}</span>
+              <span class="stat-label">Photos</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">{{member.age || 0}}</span>
+              <span class="stat-label">Age</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">0</span>
+              <span class="stat-label">Likes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Content - Tabs Section (65%) -->
+    <div class="content-section">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab === 'about'"
+          (click)="setActiveTab('about')"
+        >
+          <i class="fas fa-user"></i>
+          <span>About</span>
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab === 'interests'"
+          (click)="setActiveTab('interests')"
+        >
+          <i class="fas fa-heart"></i>
+          <span>Interests</span>
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab === 'photos'"
+          (click)="setActiveTab('photos')"
+        >
+          <i class="fas fa-camera"></i>
+          <span>Photos</span>
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab === 'messages'"
+          (click)="setActiveTab('messages')"
+        >
+          <i class="fas fa-envelope"></i>
+          <span>Messages</span>
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- About Tab -->
+        <div class="tab-panel" *ngIf="activeTab === 'about'">
+          <div class="content-card">
+            <h3 class="section-title">About {{member.knownAs}}</h3>
+            <div class="about-content">
+              <p class="description">{{member.introduction || 'No description available.'}}</p>
+              
+              <div class="details-grid">
+                <div class="detail-item">
+                  <label>Looking For</label>
+                  <span>{{member.lookingFor || 'Not specified'}}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Interests</label>
+                  <span>{{member.interests || 'Not specified'}}</span>
+                </div>
+                <div class="detail-item">
+                  <label>City</label>
+                  <span>{{member.city || 'Not specified'}}</span>
+                </div>
+                <div class="detail-item">
+                  <label>Country</label>
+                  <span>{{member.country || 'Not specified'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interests Tab -->
+        <div class="tab-panel" *ngIf="activeTab === 'interests'">
+          <div class="content-card">
+            <h3 class="section-title">Interests & Hobbies</h3>
+            <div class="interests-content">
+              <div class="interest-tags" *ngIf="member.interests">
+                <span class="interest-tag">
+                  {{member.interests}}
+                </span>
+              </div>
+              <p *ngIf="!member.interests" class="no-content">
+                No interests shared yet.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photos Tab -->
+        <div class="tab-panel" *ngIf="activeTab === 'photos'">
+          <div class="content-card">
+            <h3 class="section-title">Photos</h3>
+            <div class="photos-content">
+              <!-- Photo Gallery -->
+              <div class="simple-gallery" *ngIf="member.photos && member.photos.length > 0; else noPhotos">
+                <div class="gallery-main">
+                  <img 
+                    [src]="selectedPhoto ? selectedPhoto.url : (member.photos && member.photos.length > 0 ? member.photos[0].url : '/user.png')" 
+                    [alt]="member.knownAs"
+                    class="main-photo"
+                  >
+                </div>
+                <div class="gallery-thumbnails" *ngIf="member.photos.length > 1">
+                  <div 
+                    class="thumbnail"
+                    *ngFor="let photo of member.photos; let i = index"
+                    [class.active]="selectedPhotoIndex === i"
+                    (click)="selectPhoto(i)"
+                  >
+                    <img [src]="photo.url" [alt]="member.knownAs">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- No Photos State -->
+              <ng-template #noPhotos>
+                <div class="no-photos">
+                  <i class="fas fa-camera fa-3x"></i>
+                  <p>No photos available</p>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div class="tab-panel" *ngIf="activeTab === 'messages'">
+          <div class="content-card">
+            <h3 class="section-title">Send Message</h3>
+            <div class="message-content">
+              <div class="message-composer">
+                <textarea 
+                  class="message-input" 
+                  placeholder="Write a message to {{member.knownAs}}..."
+                  [(ngModel)]="messageText"
+                  rows="6"
+                ></textarea>
+                <button class="btn btn-primary send-btn" (click)="sendMessage()">
+                  <i class="fas fa-paper-plane"></i>
+                  Send Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="!member">
+  <div class="loading-spinner"></div>
+  <p class="loading-text">Loading profile...</p>
+</div>
