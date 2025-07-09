@@ -6,10 +6,11 @@ import { MembersService } from '../../_services/members';
 import { Account } from '../../_services/account';
 import { Member } from '../../models/member';
 import { CanComponentDeactivate } from '../../_guards/prevent-unsaved-changes.guard';
+import { PhotoEdit } from "../photo-edit/photo-edit";
 
 @Component({
   selector: 'app-edit-member',
-  imports: [CommonModule, DatePipe, FormsModule],
+  imports: [CommonModule, DatePipe, FormsModule, PhotoEdit],
   templateUrl: './edit-member.html',
   styleUrl: './edit-member.css'
 })
@@ -104,5 +105,9 @@ export class EditMember implements OnInit, CanComponentDeactivate {
       return confirm('You have unsaved changes. Are you sure you want to leave?');
     }
     return true;
+  }
+  onMemberChange(event : Member){
+    this.member = event;
+
   }
 }

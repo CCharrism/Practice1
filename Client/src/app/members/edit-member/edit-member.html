@@ -185,9 +185,8 @@
             <div class="photos-content">
               <div class="photo-upload-section">
                 <div class="upload-area">
-                  <i class="fas fa-cloud-upload-alt fa-3x"></i>
-                  <p>Photo management coming soon</p>
-                  <small>You'll be able to upload and manage your photos here</small>
+                  
+                  <app-photo-edit [member]="member" (memberChange)="onMemberChange($event)"></app-photo-edit>
                 </div>
               </div>
             </div>
