@@ -20,8 +20,14 @@
         
             
                 <div ngbDropdown class="d-inline-block">
-                    <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-                        Welcome User
+                    <button type="button" class="btn btn-outline-primary d-flex align-items-center" id="dropdownBasic1" ngbDropdownToggle>
+                        <img 
+                            [src]="accountService.currentUser()?.photoUrl || '/user.png'" 
+                            alt="Profile photo"
+                            class="rounded-circle me-2"
+                            style="width: 32px; height: 32px; object-fit: cover;"
+                        >
+                        Welcome {{accountService.currentUser()?.username}}
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                         <button ngbDropdownItem routerLink="/member/edit">Edit Profile</button>

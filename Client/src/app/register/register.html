@@ -1,11 +1,10 @@
-<div class="register-form">
+<!-- <div class="register-form">
   <h2>Sign Up</h2>
-  <form #registerForm="ngForm" (ngSubmit)="register()">
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
     <div class="form-group">
       <input 
         type="text" 
-        name="username"
-        [(ngModel)]="model.username"
+        formControlName="username"
         placeholder="Username" 
         class="form-control"
         required
@@ -14,9 +13,18 @@
     <div class="form-group">
       <input 
         type="password" 
-        name="password"
-        [(ngModel)]="model.password"
+        formControlName="password"
         placeholder="Password" 
+        class="form-control"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <input 
+        type="password" 
+        formControlName="confirmPassword"
+        placeholder="confirmPassword" 
         class="form-control"
         required
       />
@@ -24,6 +32,66 @@
     
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Register</button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div> -->
+
+<div class="register-form container mt-5">
+  <h2>Sign Up</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+    <!-- Username -->
+    <div class="form-group mb-3">
+      <input
+        type="text"
+        formControlName="username"
+        placeholder="Username"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': isInvalid('username'), 'is-valid': registerForm.get('username')?.valid }"
+        required
+      />
+      <div class="invalid-feedback">Username is required.</div>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group mb-3">
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': isInvalid('password'), 'is-valid': registerForm.get('password')?.valid }"
+        required
+      />
+      <div class="invalid-feedback">
+        Password is required and must be between 5 and 12 characters.
+      </div>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-group mb-3">
+      <input
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Confirm Password"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            isInvalid('confirmPassword') || registerForm.errors?.['passwordMismatch'],
+          'is-valid':
+            registerForm.get('confirmPassword')?.valid &&
+            !registerForm.errors?.['passwordMismatch']
+        }"
+        required
+      />
+      <div class="invalid-feedback">
+        Confirm Password is required and must match Password.
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions d-flex gap-2">
+      <button type="submit" class="btn btn-primary"  [disabled]="registerForm.invalid">Register</button>
       <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
     </div>
   </form>

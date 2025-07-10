@@ -34,6 +34,14 @@ export class MembersService {
     return this.http.put(this.baseUrl + 'users/update-profile', updateDto, this.getHttpOptions());
   }
 
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {}, this.getHttpOptions());
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId, this.getHttpOptions());
+  }
+
   getHttpOptions() {  
     // const user = this.accountService.currentUser();
     // if (!user) return {};

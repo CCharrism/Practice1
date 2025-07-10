@@ -19,10 +19,11 @@ export class Account {
   login(model: any) {
     return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
       map(user=>{
-        if(user){
-          localStorage.setItem('user', JSON.stringify(user));
-        }
-        this.currentUser.set(user);
+       if(user){
+        console.log(user);
+        this.setCurrentUser(user);
+         console.log(this.currentUser())
+        } 
       })
     ); 
 
@@ -31,19 +32,31 @@ export class Account {
   register(model: any) {
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map(user=>{
-        if(user){
-          localStorage.setItem('user', JSON.stringify(user));
+       if(user){
+          this.setCurrentUser(user);
         }
-        this.currentUser.set(user);
-        return user;
+        
       })
        
     ); 
 
   }
+
+  setCurrentUser(user: User) {
+    this.currentUser.set(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
   logout() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
     this.router.navigate(['/']);
+  }
+
+  updateCurrentUserPhoto(photoUrl: string) {
+    const currentUser = this.currentUser();
+    if (currentUser) {
+      currentUser.photoUrl = photoUrl;
+      this.setCurrentUser(currentUser);
+    }
   }
 }

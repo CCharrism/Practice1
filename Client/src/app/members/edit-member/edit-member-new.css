@@ -1,0 +1,565 @@
+/* Modern Bootstrap-based Edit Member Page with Stunning Visual Design */
+
+/* Main Container Styles */
+.member-edit-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 0;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: 200px;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8e53 50%, #ffab73 100%);
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Main Content Wrapper */
+.main-content-wrapper {
+  margin-top: -100px;
+  position: relative;
+  z-index: 3;
+  padding: 0 1rem 2rem;
+}
+
+/* Profile Sidebar Card */
+.profile-sidebar-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.profile-sidebar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+}
+
+/* Profile Image Section */
+.profile-image-section {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profile-sidebar-card:hover .profile-image {
+  transform: scale(1.05);
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+
+.status-indicator.online {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  box-shadow: 0 0 20px rgba(39, 174, 96, 0.5);
+}
+
+.profile-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.profile-image-section:hover .profile-overlay {
+  opacity: 1;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.profile-action-btn {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.profile-action-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Profile Info Section */
+.profile-info-section {
+  padding: 2rem;
+}
+
+.profile-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #ff6b35, #ff8e53);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.profile-age {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin: 0 0 1.5rem 0;
+  font-weight: 500;
+}
+
+/* Info Items */
+.info-items {
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.info-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35, #ff8e53);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 1rem;
+  font-size: 0.9rem;
+}
+
+.info-text {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Action Section */
+.action-section {
+  margin-bottom: 1.5rem;
+}
+
+.save-changes-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ff6b35, #ff8e53);
+  border: none;
+  border-radius: 15px;
+  padding: 1rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+.save-changes-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ff8e53, #ffab73);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+}
+
+.save-changes-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Status Messages */
+.status-messages {
+  margin-top: 1rem;
+}
+
+.success-message, .warning-message {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.success-message {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.warning-message {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  color: #856404;
+  border-left: 4px solid #ffc107;
+}
+
+/* Content Main Card */
+.content-main-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.content-main-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab Navigation Modern */
+.tab-navigation-modern {
+  display: flex;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modern-tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.modern-tab-btn:hover {
+  background: rgba(255, 107, 53, 0.1);
+}
+
+.modern-tab-btn.active {
+  background: linear-gradient(135deg, #ff6b35, #ff8e53);
+  color: white;
+}
+
+.modern-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(135deg, #ff8e53, #ffab73);
+}
+
+.tab-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.tab-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tab Content Modern */
+.tab-content-modern {
+  padding: 0;
+}
+
+.tab-panel-modern {
+  padding: 2rem;
+  min-height: 500px;
+}
+
+/* Section Headers */
+.section-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.section-title-modern {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.section-title-modern i {
+  color: #ff6b35;
+}
+
+.section-subtitle {
+  color: #7f8c8d;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* About Content Card */
+.about-content-card {
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Modern Form Styles */
+.modern-edit-form {
+  margin-top: 2rem;
+}
+
+.form-group-modern {
+  margin-bottom: 2rem;
+}
+
+.form-label-modern {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.form-label-modern i {
+  color: #ff6b35;
+  width: 20px;
+}
+
+.form-control-modern {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-control-modern:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  transform: translateY(-2px);
+}
+
+.form-control-modern::placeholder {
+  color: #adb5bd;
+  opacity: 1;
+}
+
+/* Photos Content Card */
+.photos-content-card {
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.photos-management-area {
+  margin-top: 2rem;
+}
+
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: #7f8c8d;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e9ecef;
+  border-top: 4px solid #ff6b35;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.global-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.loader-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e9ecef;
+  border-top: 4px solid #ff6b35;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1199px) {
+  .profile-sidebar-card {
+    position: static;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .main-content-wrapper {
+    margin-top: -50px;
+    padding: 0 0.5rem 1rem;
+  }
+  
+  .hero-content {
+    padding: 0 1rem;
+  }
+  
+  .profile-info-section {
+    padding: 1.5rem;
+  }
+  
+  .tab-panel-modern {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .profile-name {
+    font-size: 1.75rem;
+  }
+  
+  .modern-tab-btn {
+    padding: 1rem;
+  }
+  
+  .tab-icon {
+    font-size: 1.25rem;
+  }
+  
+  .tab-text {
+    font-size: 0.8rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.5rem;
+    flex-direction: column;
+  }
+  
+  .about-content-card, .photos-content-card {
+    padding: 1.5rem;
+  }
+}

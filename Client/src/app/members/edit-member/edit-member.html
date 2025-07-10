@@ -1,194 +1,191 @@
-<div class="member-detail-container" *ngIf="member">
-  <!-- Hero Section with Background -->
-  <div class="hero-section">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <button class="back-btn" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i>
-        <span>Back to Members</span>
-      </button>
-    </div>
-  </div>
+<div class="container-fluid py-4" *ngIf="member">
+  <div class="row g-4">
+    <!-- Sidebar Profile Card (col-5) -->
+    <div class="col-lg-5">
+      <div class="card profile-sidebar">
+        <div class="card-body text-center">
+          <!-- Profile Image -->
+          <div class="position-relative mb-3">
+            <img 
+              [src]="member.photoUrl || '/user.png'" 
+              [alt]="member.knownAs"
+              class="profile-image rounded-circle"
+            >
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+              Online
+            </span>
+          </div>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Left Sidebar - Profile Card (35%) -->
-    <div class="profile-sidebar">
-      <div class="profile-card">
-        <!-- Profile Image -->
-        <div class="profile-image-container">
-          <img 
-            [src]="member.photoUrl || '/user.png'" 
-            [alt]="member.knownAs"
-            class="profile-image"
-          >
-          <div class="status-indicator online"></div>
-        </div>
-
-        <!-- Profile Info -->
-        <div class="profile-info">
-          <h1 class="profile-name">{{member.knownAs}}</h1>
-          <p class="profile-age">{{member.age}} years old</p>
+          <!-- Profile Info -->
+          <h3 class="card-title mb-1">{{member.knownAs}}</h3>
+          <p class="text-muted mb-3">{{member.age}} years old</p>
           
-          <!-- Location -->
-          <div class="info-item">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>{{member.city}}<span *ngIf="member.country">, {{member.country}}</span></span>
-          </div>
-
-          <!-- Last Active -->
-          <div class="info-item">
-            <i class="fas fa-clock"></i>
-            <span>Active {{member.lastActive | date:'short'}}</span>
-          </div>
-
-          <!-- Member Since -->
-          <div class="info-item">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Member since {{member.created | date:'MMM yyyy'}}</span>
+          <!-- Quick Info -->
+          <div class="quick-info mb-4">
+            <div class="info-item d-flex align-items-center justify-content-center mb-2">
+              <i class="fas fa-map-marker-alt text-primary me-2"></i>
+              <span>{{member.city}}, {{member.country}}</span>
+            </div>
+            <div class="info-item d-flex align-items-center justify-content-center mb-2">
+              <i class="fas fa-clock text-primary me-2"></i>
+              <small>Active {{member.lastActive | date:'short'}}</small>
+            </div>
+            <div class="info-item d-flex align-items-center justify-content-center">
+              <i class="fas fa-calendar-alt text-primary me-2"></i>
+              <small>Member since {{member.created | date:'MMM yyyy'}}</small>
+            </div>
           </div>
 
           <!-- Save Button -->
-          <div class="action-buttons">
-            <button 
-              class="btn btn-primary save-btn" 
-              [disabled]="!editForm?.dirty || isLoading"
-              (click)="updateMember()"
-            >
-              <i class="fas fa-save" *ngIf="!isLoading"></i>
-              <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
-              {{isLoading ? 'Saving...' : 'Save Changes'}}
-            </button>
-          </div>
+          <button 
+            class="btn btn-primary btn-lg w-100 mb-3" 
+            [disabled]="!editForm.dirty || isLoading"
+            (click)="updateMember()"
+          >
+            <i class="fas fa-save me-2" *ngIf="!isLoading"></i>
+            <i class="fas fa-spinner fa-spin me-2" *ngIf="isLoading"></i>
+            {{isLoading ? 'Saving...' : 'Save Changes'}}
+          </button>
 
           <!-- Status Messages -->
-          <div class="status-messages">
-            <div class="success-message" *ngIf="showSuccessMessage">
-              <i class="fas fa-check-circle"></i>
-              Profile updated successfully!
-            </div>
-            <div class="warning-message" *ngIf="hasUnsavedChanges && !showSuccessMessage">
-              <i class="fas fa-exclamation-triangle"></i>
-              You have unsaved changes
-            </div>
+          <div class="alert alert-success d-flex align-items-center" *ngIf="showSuccessMessage">
+            <i class="fas fa-check-circle me-2"></i>
+            Profile updated successfully!
+          </div>
+          <div class="alert alert-warning d-flex align-items-center" *ngIf="hasUnsavedChanges && !showSuccessMessage">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            You have unsaved changes
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right Content - Tabs Section (65%) -->
-    <div class="content-section">
-      <!-- Tab Navigation -->
-      <div class="tab-navigation">
-        <button 
-          class="tab-btn" 
-          [class.active]="activeTab === 'about'"
-          (click)="setActiveTab('about')"
-        >
-          <i class="fas fa-user"></i>
-          <span>About</span>
-        </button>
-        <button 
-          class="tab-btn" 
-          [class.active]="activeTab === 'photos'"
-          (click)="setActiveTab('photos')"
-        >
-          <i class="fas fa-camera"></i>
-          <span>Photos</span>
-        </button>
-      </div>
-
-      <!-- Tab Content -->
-      <div class="tab-content">
-        <!-- About Tab -->
-        <div class="tab-panel" *ngIf="activeTab === 'about'">
-          <div class="content-card">
-            <h3 class="section-title">Edit Your Profile</h3>
-            <form #editForm="ngForm" class="edit-form">
-              <!-- Description -->
-              <div class="form-group">
-                <label for="introduction">Description</label>
-                <textarea 
-                  id="introduction"
-                  name="introduction"
-                  class="form-control"
-                  rows="4"
-                  placeholder="Tell others about yourself..."
-                  [(ngModel)]="member.introduction"
-                  (input)="onFormChange()"
-                ></textarea>
-              </div>
-
-              <!-- Looking For -->
-              <div class="form-group">
-                <label for="lookingFor">Looking For</label>
-                <textarea 
-                  id="lookingFor"
-                  name="lookingFor"
-                  class="form-control"
-                  rows="3"
-                  placeholder="What are you looking for in a partner?"
-                  [(ngModel)]="member.lookingFor"
-                  (input)="onFormChange()"
-                ></textarea>
-              </div>
-
-              <!-- Interests -->
-              <div class="form-group">
-                <label for="interests">Interests</label>
-                <input 
-                  type="text"
-                  id="interests"
-                  name="interests"
-                  class="form-control"
-                  placeholder="Music, Sports, Travel, etc."
-                  [(ngModel)]="member.interests"
-                  (input)="onFormChange()"
-                >
-              </div>
-
-              <!-- Location Details -->
-              <div class="form-row">
-                <div class="form-group half-width">
-                  <label for="city">City</label>
-                  <input 
-                    type="text"
-                    id="city"
-                    name="city"
-                    class="form-control"
-                    placeholder="Your city"
-                    [(ngModel)]="member.city"
-                    (input)="onFormChange()"
-                  >
-                </div>
-                <div class="form-group half-width">
-                  <label for="country">Country</label>
-                  <input 
-                    type="text"
-                    id="country"
-                    name="country"
-                    class="form-control"
-                    placeholder="Your country"
-                    [(ngModel)]="member.country"
-                    (input)="onFormChange()"
-                  >
-                </div>
-              </div>
-            </form>
-          </div>
+    <!-- Main Content Area (col-7) -->
+    <div class="col-lg-7">
+      <div class="card main-content">
+        <!-- Header -->
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Edit Your Profile
+          </h4>
         </div>
 
-        <!-- Photos Tab -->
-        <div class="tab-panel" *ngIf="activeTab === 'photos'">
-          <div class="content-card">
-            <h3 class="section-title">Manage Photos</h3>
-            <div class="photos-content">
-              <div class="photo-upload-section">
-                <div class="upload-area">
-                  
-                  <app-photo-edit [member]="member" (memberChange)="onMemberChange($event)"></app-photo-edit>
+        <!-- Tabs Navigation -->
+        <div class="card-body p-0">
+          <ul class="nav nav-tabs" id="editTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button 
+                class="nav-link"
+                [class.active]="activeTab === 'about'"
+                (click)="setActiveTab('about')"
+                type="button"
+              >
+                <i class="fas fa-user me-2"></i>About Me
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button 
+                class="nav-link"
+                [class.active]="activeTab === 'photos'"
+                (click)="setActiveTab('photos')"
+                type="button"
+              >
+                <i class="fas fa-camera me-2"></i>My Photos
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content p-4">
+            <!-- About Tab -->
+            <div class="tab-pane fade" [class.show]="activeTab === 'about'" [class.active]="activeTab === 'about'">
+              <form #editForm="ngForm">
+                <!-- Introduction -->
+                <div class="mb-4">
+                  <label for="introduction" class="form-label fw-bold">
+                    <i class="fas fa-quote-left text-primary me-2"></i>About You
+                  </label>
+                  <textarea 
+                    id="introduction"
+                    name="introduction"
+                    class="form-control"
+                    rows="4"
+                    placeholder="Tell others about yourself, your personality, hobbies, and what makes you unique..."
+                    [(ngModel)]="member.introduction"
+                    (input)="onFormChange()"
+                  ></textarea>
                 </div>
-              </div>
+
+                <!-- Looking For -->
+                <div class="mb-4">
+                  <label for="lookingFor" class="form-label fw-bold">
+                    <i class="fas fa-heart text-danger me-2"></i>What You're Looking For
+                  </label>
+                  <textarea 
+                    id="lookingFor"
+                    name="lookingFor"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Describe your ideal partner and what kind of relationship you're seeking..."
+                    [(ngModel)]="member.lookingFor"
+                    (input)="onFormChange()"
+                  ></textarea>
+                </div>
+
+                <!-- Interests -->
+                <div class="mb-4">
+                  <label for="interests" class="form-label fw-bold">
+                    <i class="fas fa-star text-warning me-2"></i>Interests & Hobbies
+                  </label>
+                  <input 
+                    type="text"
+                    id="interests"
+                    name="interests"
+                    class="form-control"
+                    placeholder="Music, Sports, Travel, Reading, Cooking, Photography..."
+                    [(ngModel)]="member.interests"
+                    (input)="onFormChange()"
+                  >
+                </div>
+
+                <!-- Location -->
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="city" class="form-label fw-bold">
+                      <i class="fas fa-city text-info me-2"></i>City
+                    </label>
+                    <input 
+                      type="text"
+                      id="city"
+                      name="city"
+                      class="form-control"
+                      placeholder="Your city"
+                      [(ngModel)]="member.city"
+                      (input)="onFormChange()"
+                    >
+                  </div>
+                  <div class="col-md-6">
+                    <label for="country" class="form-label fw-bold">
+                      <i class="fas fa-globe text-success me-2"></i>Country
+                    </label>
+                    <input 
+                      type="text"
+                      id="country"
+                      name="country"
+                      class="form-control"
+                      placeholder="Your country"
+                      [(ngModel)]="member.country"
+                      (input)="onFormChange()"
+                    >
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- Photos Tab -->
+            <div class="tab-pane fade" [class.show]="activeTab === 'photos'" [class.active]="activeTab === 'photos'">
+              <app-photo-edit [member]="member" (memberChange)="onMemberChange($event)"></app-photo-edit>
             </div>
           </div>
         </div>
@@ -198,15 +195,9 @@
 </div>
 
 <!-- Loading State -->
-<div class="loading-container" *ngIf="!member">
-  <div class="loading-spinner"></div>
-  <p class="loading-text">Loading your profile...</p>
-</div>
-
-<!-- Global Loading Overlay -->
-<div class="global-loader" *ngIf="isLoading">
-  <div class="loader-content">
-    <div class="spinner"></div>
-    <p>Saving changes...</p>
+<div class="text-center py-5" *ngIf="!member">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
+  <p class="mt-3 text-muted">Loading your profile...</p>
 </div>

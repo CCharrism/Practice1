@@ -1,189 +1,175 @@
+<!-- Photo Gallery Management -->
 <div class="photo-gallery">
-  <!-- Upload Section -->
-  <div class="upload-section">
-    <div class="upload-card">
-      <div class="upload-icon">
-        <i class="fas fa-cloud-upload-alt"></i>
-      </div>
-      <h4>Add New Photo</h4>
-      <p>Drag & drop or click to upload</p>
-      <input type="file" class="file-input" multiple accept="image/*">
-      <button class="btn btn-upload">
-        <i class="fas fa-plus"></i>
-        Choose Photos
-      </button>
-    </div>
-  </div>
-
-  <!-- Photos Grid -->
+  <!-- Photo Grid Display -->
   <div class="photos-grid">
-    @for (photo of member().photos; track photo.id) {
-      <div class="photo-card" [class.main-photo]="photo.isMain">
-        <!-- Photo Container -->
-        <div class="photo-container">
-          <img [src]="photo.url" [alt]="member().knownAs" class="photo-image">
-          
-          <!-- Main Photo Badge -->
-          @if (photo.isMain) {
-            <div class="main-badge">
-              <i class="fas fa-crown"></i>
-              <span>Main Photo</span>
-            </div>
-          }
-          
-          <!-- Photo Overlay -->
-          <div class="photo-overlay">
-            <div class="overlay-actions">
-              @if (!photo.isMain) {
-                <button 
-                  class="action-btn primary" 
-                  title="Set as main photo"
-                  (click)="setMainPhoto(photo)"
-                >
-                  <i class="fas fa-star"></i>
-                </button>
+    <div class="row g-3">
+      @for (photo of member().photos; track photo.id) {
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="photo-item" [class.main-photo]="photo.isMain">
+            <div class="photo-wrapper">
+              <img [src]="photo.url" [alt]="member().knownAs" class="photo-img">
+              
+              <!-- Main Photo Badge -->
+              @if (photo.isMain) {
+                <div class="main-photo-badge">
+                  <i class="fas fa-crown"></i>
+                  <span>Main</span>
+                </div>
               }
-              <button 
-                class="action-btn secondary" 
-                title="Edit photo"
-                (click)="editPhoto(photo)"
-              >
-                <i class="fas fa-edit"></i>
-              </button>
-              @if (!photo.isMain) {
-                <button 
-                  class="action-btn danger" 
-                  title="Delete photo"
-                  (click)="deletePhoto(photo)"
-                >
-                  <i class="fas fa-trash"></i>
-                </button>
-              }
+              
+              <!-- Photo Actions -->
+              <div class="photo-actions">
+                @if (!photo.isMain) {
+                  <button 
+                    class="action-btn main-btn" 
+                    title="Set as main photo"
+                    (click)="setMainPhoto(photo)"
+                  >
+                    <i class="fas fa-star"></i>
+                  </button>
+                }
+                @if (!photo.isMain) {
+                  <button 
+                    class="action-btn delete-btn" 
+                    title="Delete photo"
+                    (click)="deletePhoto(photo)"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                }
+              </div>
             </div>
           </div>
         </div>
-        
-        <!-- Photo Info -->
-        <div class="photo-info">
-          <div class="photo-status">
-            <span class="status-indicator approved">
-              <i class="fas fa-check-circle"></i>
-              Active
-            </span>
-          </div>
-        </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <!-- Empty State -->
   @if (member().photos.length === 0) {
-    <div class="empty-state">
-      <div class="empty-icon">
+    <div class="empty-photos">
+      <div class="empty-content">
         <i class="fas fa-images"></i>
+        <h3>No Photos Yet</h3>
+        <p>Upload your first photo to create an amazing profile!</p>
       </div>
-      <h3>No Photos Yet</h3>
-      <p>Upload your first photo to get started!</p>
     </div>
   }
-</div>
 
-
-
-<!-- Image Uploader
- -->
-
-   <div class="row">
- 
-        <div class="col-md-3">
- 
-            <h3>Select files</h3>
- 
-            <div ng2FileDrop
-                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                 (fileOver)="fileOverBase($event)"
-                 [uploader]="uploader"
-                 class="well my-drop-zone">
-                Base drop zone
-            </div>
- 
-
- 
-            Multiple
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
- 
-            Single
-            <input type="file" ng2FileSelect [uploader]="uploader" />
-        </div>
- 
-        <div class="col-md-9" style="margin-bottom: 40px">
- 
-            <h3>Upload queue</h3>
-            <p>Queue length: {{ uploader?.queue?.length }}</p>
- 
-            <table class="table">
-                <thead>
-                <tr>
-                    <th width="50%">Name</th>
-                    <th>Size</th>
-                    <th>Progress</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of uploader.queue">
-                    <td><strong>{{ item?.file?.name }}</strong></td>
-                    <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                    <td *ngIf="uploader.options.isHTML5">
-                        <div class="progress" style="margin-bottom: 0;">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                        <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                    <td nowrap>
-                        <button type="button" class="btn btn-success btn-xs"
-                                (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                            <span class="glyphicon glyphicon-upload"></span> Upload
-                        </button>
-                        <button type="button" class="btn btn-warning btn-xs"
-                                (click)="item.cancel()" [disabled]="!item.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs"
-                                (click)="item.remove()">
-                            <span class="glyphicon glyphicon-trash"></span> Remove
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
- 
-            <div>
-                <div>
-                    Queue progress:
-                    <div class="progress" style="">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success btn-s"
-                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> Upload all
-                </button>
-                <button type="button" class="btn btn-warning btn-s"
-                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                </button>
-                <button type="button" class="btn btn-danger btn-s"
-                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                    <span class="glyphicon glyphicon-trash"></span> Remove all
-                </button>
-            </div>
- 
-        </div>
- 
+  <!-- Upload Section - Functional Uploader -->
+  <div class="upload-section">
+    <div class="upload-header">
+      <h4>
+        <i class="fas fa-cloud-upload-alt"></i>
+        Add New Photos
+      </h4>
+      <p>Upload high-quality photos to showcase your best self</p>
     </div>
+
+    <!-- File Drop Zone -->
+    <div ng2FileDrop 
+         [ngClass]="{'file-drop-active': hasBaseDropZoneOver}" 
+         (fileOver)="fileOverBase($event)"
+         [uploader]="uploader" 
+         class="drop-zone">
+      <div class="drop-zone-content">
+        <div class="drop-icon">
+          <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+        <h5>Drop Your Photos Here</h5>
+        <p>or click to browse your device</p>
+        <input type="file" ng2FileSelect [uploader]="uploader" multiple accept="image/*" style="display: none;" #fileInput>
+        <button type="button" class="browse-btn" (click)="fileInput.click()">
+          <i class="fas fa-folder-open"></i>
+          Browse Files
+        </button>
+      </div>
+    </div>
+
+    <!-- Upload Queue -->
+    @if (uploader?.queue?.length) {
+      <div class="upload-queue">
+        <div class="queue-header">
+          <h5>
+            <i class="fas fa-list-ul"></i>
+            Upload Queue ({{uploader?.queue?.length}} files)
+          </h5>
+        </div>
+
+        <div class="queue-list">
+          @for (item of uploader?.queue; track item.file.name) {
+            <div class="queue-item">
+              <div class="file-preview">
+                <i class="fas fa-image"></i>
+                <div class="file-info">
+                  <span class="file-name">{{item.file.name}}</span>
+                  <span class="file-size">{{(item.file.size/1024/1024) | number:'1.1-1'}} MB</span>
+                </div>
+              </div>
+              <div class="upload-status">
+                @if (item.isUploaded) {
+                  <div class="status-badge success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Uploaded</span>
+                  </div>
+                } @else if (item.isUploading) {
+                  <div class="status-badge uploading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Uploading...</span>
+                  </div>
+                } @else {
+                  <div class="status-badge pending">
+                    <i class="fas fa-clock"></i>
+                    <span>Pending</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <div class="progress-info">
+            <span>Upload Progress</span>
+            <span class="progress-percent">{{uploader?.progress}}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="uploader?.progress"></div>
+          </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="upload-controls">
+          <button 
+            type="button" 
+            class="control-btn upload-btn" 
+            (click)="uploader?.uploadAll()"
+            [disabled]="!uploader?.getNotUploadedItems()?.length"
+          >
+            <i class="fas fa-upload"></i>
+            Upload All
+          </button>
+          <button 
+            type="button" 
+            class="control-btn cancel-btn" 
+            (click)="uploader?.cancelAll()"
+            [disabled]="!uploader?.isUploading"
+          >
+            <i class="fas fa-ban"></i>
+            Cancel All
+          </button>
+          <button 
+            type="button" 
+            class="control-btn clear-btn" 
+            (click)="uploader?.clearQueue()"
+            [disabled]="!uploader?.queue?.length"
+          >
+            <i class="fas fa-trash"></i>
+            Clear Queue
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
