@@ -1,24 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Register } from '../register/register';
+import { RegisterComponent } from '../register/register';
 import { Account } from '../_services/account';
 import { RouterLink } from '@angular/router';
+import { VantaBackgroundComponent } from "../vanta-background/vanta-background";
+import { BirdsBackgroundComponent } from "../birds-background/birds-background";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, Register, RouterLink],
+  imports: [CommonModule, RouterLink, RegisterComponent, VantaBackgroundComponent, BirdsBackgroundComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home {
-   showRegister = false;
    accountService = inject(Account);
 
-  toggleRegister() {
-    this.showRegister = !this.showRegister;
-  }
-
   cancelRegisterMode(event: boolean) {
-    this.showRegister = event;
+    // Handle cancel register if needed
+    console.log('Register cancelled:', event);
   }
 }

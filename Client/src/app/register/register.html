@@ -1,98 +1,145 @@
-<!-- <div class="register-form">
-  <h2>Sign Up</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="register()">
-    <div class="form-group">
-      <input 
-        type="text" 
-        formControlName="username"
-        placeholder="Username" 
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <input 
-        type="password" 
-        formControlName="password"
-        placeholder="Password" 
-        class="form-control"
-        required
-      />
-    </div>
-
-    <div class="form-group">
-      <input 
-        type="password" 
-        formControlName="confirmPassword"
-        placeholder="confirmPassword" 
-        class="form-control"
-        required
-      />
-    </div>
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-90 
+" >
+  <div class="register-card p-4 rounded-4 shadow-lg " style="max-width: 700px; width: 100%; background: white; border: 1px solid #ffe4d6;">
     
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Register</button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
-    </div>
-  </form>
-</div> -->
-
-<div class="register-form container mt-5">
-  <h2>Sign Up</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
-    <!-- Username -->
-    <div class="form-group mb-3">
-      <input
-        type="text"
-        formControlName="username"
-        placeholder="Username"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': isInvalid('username'), 'is-valid': registerForm.get('username')?.valid }"
-        required
-      />
-      <div class="invalid-feedback">Username is required.</div>
+    <!-- Header -->
+    <div class="text-center mb-4" >
+      <h2 class="fw-bold text-dark mb-2">Create Account</h2>
+      <p class="text-muted">Join our dating community today</p>
     </div>
 
-    <!-- Password -->
-    <div class="form-group mb-3">
-      <input
-        type="password"
-        formControlName="password"
-        placeholder="Password"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': isInvalid('password'), 'is-valid': registerForm.get('password')?.valid }"
-        required
-      />
-      <div class="invalid-feedback">
-        Password is required and must be between 5 and 12 characters.
+    <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate style="padding-left: 80px; padding-right: 80px;">
+      
+      <!-- Gender Selection -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold text-dark mb-2">I am a:</label>
+        <div class="d-flex gap-3">
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="radio" 
+              name="gender" 
+              value="male" 
+              formControlName="gender"
+              id="male"
+            >
+            <label class="form-check-label fw-medium" for="male">
+              Male
+            </label>
+          </div>
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="radio" 
+              name="gender" 
+              value="female" 
+              formControlName="gender"
+              id="female"
+            >
+            <label class="form-check-label fw-medium" for="female">
+              Female
+            </label>
+          </div>
+        </div>
+        <div 
+          *ngIf="gender.invalid && (gender.dirty || gender.touched)" 
+          class="invalid-feedback d-block"
+        >
+          Please select your gender.
+        </div>
       </div>
-    </div>
 
-    <!-- Confirm Password -->
-    <div class="form-group mb-3">
-      <input
-        type="password"
-        formControlName="confirmPassword"
-        placeholder="Confirm Password"
-        class="form-control"
-        [ngClass]="{
-          'is-invalid':
-            isInvalid('confirmPassword') || registerForm.errors?.['passwordMismatch'],
-          'is-valid':
-            registerForm.get('confirmPassword')?.valid &&
-            !registerForm.errors?.['passwordMismatch']
-        }"
-        required
-      />
-      <div class="invalid-feedback">
-        Confirm Password is required and must match Password.
+      <!-- Username -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="username"
+          placeholder="Username"
+          type="text"
+        ></app-text-input>
       </div>
-    </div>
 
-    <!-- Actions -->
-    <div class="form-actions d-flex gap-2">
-      <button type="submit" class="btn btn-primary"  [disabled]="registerForm.invalid">Register</button>
-      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
-    </div>
-  </form>
+      <!-- Known As -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="knownAs"
+          placeholder="Known As (Display Name)"
+          type="text"
+        ></app-text-input>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="dateOfBirth"
+          placeholder="Date of Birth (YYYY-MM-DD)"
+          type="date"
+        ></app-text-input>
+      </div>
+
+      <!-- City -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="city"
+          placeholder="City"
+          type="text"
+        ></app-text-input>
+      </div>
+
+      <!-- Country -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="country"
+          placeholder="Country"
+          type="text"
+        ></app-text-input>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="password"
+          placeholder="Password (5-12 characters)"
+          type="password"
+        ></app-text-input>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-3">
+        <app-text-input
+          [control]="confirmPassword"
+          placeholder="Confirm Password"
+          type="password"
+        ></app-text-input>
+
+        <div
+          *ngIf="
+            registerForm.errors?.['passwordMismatch'] &&
+            (confirmPassword.dirty || confirmPassword.touched)
+          "
+          class="invalid-feedback d-block"
+        >
+          Password and Confirm Password must match.
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-grid gap-2 mt-4">
+        <button
+          type="submit"
+          class="btn btn-register btn-lg fw-semibold"
+          [disabled]="registerForm.invalid"
+          style="background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); border: none; color: white; transition: all 0.3s ease;"
+        >
+          Create Account
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-lg fw-semibold"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

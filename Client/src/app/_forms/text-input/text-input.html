@@ -1,0 +1,12 @@
+<input
+  [type]="type"
+  [formControl]="control"
+  [placeholder]="placeholder"
+  class="form-control"
+  [class.is-invalid]="isInvalid"
+  [class.is-valid]="isValid"
+/>
+
+<div *ngIf="isInvalid" class="invalid-feedback">
+  <div *ngFor="let err of errorMessages">{{ err }}</div>
+</div>

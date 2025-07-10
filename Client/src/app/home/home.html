@@ -1,14 +1,23 @@
+<app-vanta-background></app-vanta-background>
+ <!-- <app-birds-background></app-birds-background> -->
 <div class="hero-section">
   @if(!accountService.currentUser()) {
-    <h1 class="title">Let's Make Friends and Socialize</h1>
-
-    <div class="buttons">
-      <button class="btn learn-more">Learn More</button>
-      <button class="btn register-btn" (click)="toggleRegister()">Register</button>
-    </div>
-
-    <div *ngIf="showRegister" class="register-container">
-      <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+    <div class="row min-vh-100">
+      <!-- Left side - Welcome content -->
+      <div class="col-lg-1 d-flex align-items-center justify-content-center ">
+        <div class="text-center text-lg-start p-4">
+          <h1 class="title display-4 fw-bold mb-4">Let's Make Friends and Socialize</h1>
+          <p class="lead text-muted mb-4">Join our community to meet amazing people and create lasting connections.</p>
+          <div class="buttons">
+            <button class="btn btn-outline-primary btn-lg me-3">Learn More</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right side - Register form -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center w-130">
+        <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+      </div>
     </div>
   }
   

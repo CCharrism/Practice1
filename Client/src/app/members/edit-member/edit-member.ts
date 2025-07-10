@@ -12,7 +12,7 @@ import { PhotoEdit } from "../photo-edit/photo-edit";
   selector: 'app-edit-member',
   imports: [CommonModule, DatePipe, FormsModule, PhotoEdit],
   templateUrl: './edit-member.html',
-  styleUrl: './edit-member.css'
+  styleUrl: './edit-member-premium.css'
 })
 export class EditMember implements OnInit, CanComponentDeactivate {
   @ViewChild('editForm') editForm!: NgForm;

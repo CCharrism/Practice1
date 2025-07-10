@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { CommonModule, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Photo } from '../../models/photo';
 import { Member } from '../../models/member';
 import { FileUploader, FileUploadModule } from 'ng2-file-upload';
@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-photo-edit',
-  imports: [CommonModule, NgClass, NgIf, NgFor, NgStyle, FileUploadModule],
+  imports: [CommonModule, NgClass, FileUploadModule],
   templateUrl: './photo-edit.html',
   styleUrl: './photo-edit.css'
 })
