@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MembersService } from '../../_services/members';
+import { MessageService } from '../../_services/message.service';
 import { Member } from '../../models/member';
+import { CreateMessage } from '../../models/message';
 
 @Component({
   selector: 'app-member-detail',
@@ -15,12 +17,14 @@ export class MemberDetail implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   membersService = inject(MembersService);
+  messageService = inject(MessageService);
 
   member: Member | undefined;
   activeTab: string = 'about';
   messageText: string = '';
   selectedPhotoIndex: number = 0;
   selectedPhoto: any = null;
+  sendingMessage: boolean = false;
 
   ngOnInit() {
     this.loadMember();
@@ -68,10 +72,26 @@ export class MemberDetail implements OnInit {
   }
 
   sendMessage() {
-    if (this.messageText.trim()) {
-      console.log('Sending message:', this.messageText);
-      // Implement message sending logic here
-      this.messageText = '';
+    if (this.messageText.trim() && this.member) {
+      this.sendingMessage = true;
+      const message: CreateMessage = {
+        recipientUsername: this.member.userName,
+        content: this.messageText.trim()
+      };
+
+      this.messageService.sendMessage(message).subscribe({
+        next: (response) => {
+          console.log('Message sent successfully:', response);
+          this.messageText = '';
+          this.sendingMessage = false;
+          // Optionally redirect to message thread
+          this.router.navigate(['/messages', this.member!.userName]);
+        },
+        error: (error) => {
+          console.error('Error sending message:', error);
+          this.sendingMessage = false;
+        }
+      });
     }
   }
 

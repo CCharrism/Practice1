@@ -4,6 +4,7 @@ import { Messages } from './messages/messages';
 import { Lists } from './lists/lists';
 import { MemberList } from './members/member-list/member-list';
 import { MemberDetail } from './members/member-detail/member-detail';
+import { MessageThread } from './message-thread/message-thread';
 import { authGuard } from './_guards/authguard';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { NotFound } from './not-found/not-found';
@@ -18,6 +19,10 @@ export const routes: Routes = [
         children: [
             {
                 path: 'messages', component: Messages,
+                canActivate: [authGuard]
+            },
+            {
+                path: 'messages/:username', component: MessageThread,
                 canActivate: [authGuard]
             },
             {
