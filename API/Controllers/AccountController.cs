@@ -23,20 +23,6 @@ public class AccountController(DataContext context, ITokenService tokenService, 
 
         using var hmac = new HMACSHA512();
 
-        // var user = new AppUser
-        // {
-        //     UserName = registerDto.Username.ToLower(),
-        //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-        //     PasswordSalt = hmac.Key,
-        //     DateOfBirth = DateOnly.FromDateTime(DateTime.Today.AddYears(-18)), // Default to 18 years old
-        //     KnownAs = registerDto.Username,
-        //     Gender = "Not specified",
-        //     City = "Not specified",
-        //     Country = "Not specified"
-        // };
-
-        //context.Users.Add(user);
-
         var user = mapper.Map<AppUser>(registerDto);
         user.UserName = registerDto.Username.ToLower();
         user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
@@ -51,7 +37,8 @@ public class AccountController(DataContext context, ITokenService tokenService, 
             Username = user.UserName,
             Token = tokenService.CreateToken(user),
             PhotoUrl = null,
-            KnownAs = user.KnownAs
+            KnownAs = user.KnownAs,
+            Gender = user.Gender
         };
     }
 
@@ -80,7 +67,9 @@ public class AccountController(DataContext context, ITokenService tokenService, 
             Username = user.UserName,
             Token = tokenService.CreateToken(user),
             PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-            KnownAs = user.KnownAs
+            KnownAs = user.KnownAs,
+            Gender = user.Gender
+
 
 
         };

@@ -4,6 +4,7 @@ import { map } from 'rxjs';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { Likes } from './likes'; // Importing LikesService
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class Account {
   http = inject(HttpClient);
   router = inject(Router);
   currentUser=signal<User | null>(null);
+  private likesService=inject(Likes); // Injecting LikesService as a string token
  
   baseUrl = environment.apiUrl;
 
@@ -45,6 +47,7 @@ export class Account {
   setCurrentUser(user: User) {
     this.currentUser.set(user);
     localStorage.setItem('user', JSON.stringify(user));
+    this.likesService.getLikeIds(); // Fetching like IDs after setting the current user
   }
   logout() {
     localStorage.removeItem('user');

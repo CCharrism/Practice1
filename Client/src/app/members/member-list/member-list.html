@@ -1,5 +1,180 @@
-<div class="member-grid">
-  @for (member of members; track member.id) {
-    <app-members-card [member]="member"></app-members-card>
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="text-center mb-3">Discover Amazing People</h2>
+      <p class="text-center text-muted">Find your perfect match from our community</p>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  @if (userParams()) {
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="filter-card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-filter me-2"></i>
+              Filter Your Search
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <!-- Gender Filter -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Looking for</label>
+                <select class="form-select" [(ngModel)]="userParams()!.gender" (change)="onFilterChange()">
+                  @for (gender of genderList; track gender.value) {
+                    <option [value]="gender.value">{{ gender.display }}</option>
+                  }
+                </select>
+              </div>
+
+              <!-- Age Range -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Min Age: {{ userParams()!.minAge }}</label>
+                <input type="range" class="form-range" 
+                       [(ngModel)]="userParams()!.minAge"
+                       (change)="onFilterChange()"
+                       min="18" max="99" step="1">
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Max Age: {{ userParams()!.maxAge }}</label>
+                <input type="range" class="form-range"
+                       [(ngModel)]="userParams()!.maxAge"
+                       (change)="onFilterChange()"
+                       min="18" max="99" step="1">
+              </div>
+
+              <!-- Reset Button -->
+              <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-outline-primary w-100" (click)="resetFilters()">
+                  <i class="fas fa-refresh me-2"></i>
+                  Reset Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (members().length === 0 && !isLoading) {
+    <div class="row">
+      <div class="col-12 text-center py-5 loading-container">
+        <div class="no-members-found">
+          <i class="fas fa-users fa-3x text-muted mb-3"></i>
+          <h4 class="text-muted">No members found</h4>
+          <p class="text-muted">Try adjusting your filters to find more people</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-12 text-center py-3">
+        <div class="loading-overlay">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Members Grid -->
+  @if (members().length > 0) {
+    <div class="row g-4" [class.loading-blur]="isLoading">
+      @for (member of members(); track member.id) {
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <app-members-card [member]="member"></app-members-card>
+        </div>
+      }
+    </div>
+
+    <!-- Pagination Info -->
+    @if (pagination() && !isLoading) {
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center">
+          <div class="pagination-info">
+            <i class="fas fa-users me-2"></i>
+            Showing {{ pagination()!.currentPage * pagination()!.itemsPerPage - pagination()!.itemsPerPage + 1 }} 
+            to {{ Math.min(pagination()!.currentPage * pagination()!.itemsPerPage, pagination()!.totalItems) }} 
+            of {{ pagination()!.totalItems }} members
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Beautiful Pagination Component -->
+    @if (pagination() && pagination()!.totalPages > 1) {
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center">
+          <nav aria-label="Member list pagination">
+            <ul class="pagination pagination-lg custom-pagination" [class.disabled]="isLoading">
+              <!-- Previous button -->
+              <li class="page-item" [class.disabled]="pagination()!.currentPage === 1 || isLoading">
+                <button class="page-link" 
+                        (click)="pagination()!.currentPage > 1 && !isLoading && onPageChanged(pagination()!.currentPage - 1)"
+                        [disabled]="pagination()!.currentPage === 1 || isLoading">
+                  <i class="fas fa-chevron-left"></i>
+                  <span class="d-none d-sm-inline ms-1">Previous</span>
+                </button>
+              </li>
+
+              <!-- First page -->
+              @if (getPageNumbers()[0] > 1) {
+                <li class="page-item">
+                  <button class="page-link" (click)="!isLoading && onPageChanged(1)" [disabled]="isLoading">1</button>
+                </li>
+                @if (getPageNumbers()[0] > 2) {
+                  <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                  </li>
+                }
+              }
+
+              <!-- Page numbers -->
+              @for (pageNumber of getPageNumbers(); track pageNumber) {
+                <li class="page-item" [class.active]="pageNumber === pagination()!.currentPage">
+                  <button class="page-link" (click)="!isLoading && onPageChanged(pageNumber)" [disabled]="isLoading">
+                    {{ pageNumber }}
+                  </button>
+                </li>
+              }
+
+              <!-- Last page -->
+              @if (getPageNumbers()[getPageNumbers().length - 1] < pagination()!.totalPages) {
+                @if (getPageNumbers()[getPageNumbers().length - 1] < pagination()!.totalPages - 1) {
+                  <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                  </li>
+                }
+                <li class="page-item">
+                  <button class="page-link" (click)="!isLoading && onPageChanged(pagination()!.totalPages)" [disabled]="isLoading">
+                    {{ pagination()!.totalPages }}
+                  </button>
+                </li>
+              }
+
+              <!-- Next button -->
+              <li class="page-item" [class.disabled]="pagination()!.currentPage === pagination()!.totalPages || isLoading">
+                <button class="page-link" 
+                        (click)="pagination()!.currentPage < pagination()!.totalPages && !isLoading && onPageChanged(pagination()!.currentPage + 1)"
+                        [disabled]="pagination()!.currentPage === pagination()!.totalPages || isLoading">
+                  <span class="d-none d-sm-inline me-1">Next</span>
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    }
+      
   }
 </div>

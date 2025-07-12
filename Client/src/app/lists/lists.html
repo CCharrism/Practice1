@@ -1,1 +1,83 @@
-<p>lists works!</p>
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="text-center mb-3">
+        <i class="fas fa-heart text-danger me-2"></i>
+        Your Matches & Likes
+      </h2>
+      <p class="text-center text-muted">Discover who likes you and who you've liked</p>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card tab-card">
+        <div class="card-body p-0">
+          <nav class="nav nav-tabs custom-tabs" role="tablist">
+            <button 
+              class="nav-link tab-button"
+              [class.active]="predicate === 'liked'"
+              (click)="toggleTab('liked')"
+              type="button">
+              <i class="fas fa-heart-circle-check me-2"></i>
+              Liked by You
+              <span class="badge bg-primary ms-2" *ngIf="predicate === 'liked'">{{ members.length }}</span>
+            </button>
+            <button 
+              class="nav-link tab-button"
+              [class.active]="predicate === 'likedBy'"
+              (click)="toggleTab('likedBy')"
+              type="button">
+              <i class="fas fa-heart-circle-bolt me-2"></i>
+              Liked You
+              <span class="badge bg-danger ms-2" *ngIf="predicate === 'likedBy'">{{ members.length }}</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="row">
+    <div class="col-12 text-center py-5">
+      <div class="spinner-border text-primary mb-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="text-muted">Loading your matches...</p>
+    </div>
+  </div>
+
+  <!-- Members Grid -->
+  <div *ngIf="!loading && members.length > 0" class="row g-4">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let member of members">
+      <app-members-card [member]="member"></app-members-card>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && members.length === 0" class="row">
+    <div class="col-12">
+      <div class="empty-state text-center py-5">
+        <div class="empty-icon mb-4">
+          <i class="fas fa-heart-crack" *ngIf="predicate === 'liked'"></i>
+          <i class="fas fa-heart-circle-exclamation" *ngIf="predicate === 'likedBy'"></i>
+        </div>
+        <h4 class="empty-title mb-3">
+          <span *ngIf="predicate === 'liked'">No one liked yet</span>
+          <span *ngIf="predicate === 'likedBy'">No one likes you yet</span>
+        </h4>
+        <p class="empty-description text-muted">
+          <span *ngIf="predicate === 'liked'">Start exploring and liking members to see them here!</span>
+          <span *ngIf="predicate === 'likedBy'">Don't worry, your perfect match is out there!</span>
+        </p>
+        <a class="btn btn-primary btn-lg mt-3" routerLink="/members">
+          <i class="fas fa-search me-2"></i>
+          Discover Members
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

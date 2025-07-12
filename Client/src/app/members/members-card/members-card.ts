@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Likes } from '../../_services/likes';
 
 @Component({
   selector: 'app-members-card',
@@ -9,8 +10,14 @@ import { Router } from '@angular/router';
 })
 export class MembersCard {
    @Input() member: any
+
+   likeService=inject(Likes)
    
    constructor(private router: Router) {}
+
+   hasLiked = computed(()=>this.likeService.likeIds().includes(this.member.id));
+
+
 
    viewProfile() {
      console.log('Navigating to profile:', this.member.userName);
@@ -23,12 +30,23 @@ export class MembersCard {
    }
 
    toggleLike() {
-     console.log('Toggle like:', this.member.knownAs);
-     // Like/unlike logic here
+
+    this.likeService.toggleLike(this.member.id).subscribe({
+      next:()=>{
+        this.likeService.likeIds.update(ids => {
+          if (ids.includes(this.member.id)) {
+            return ids.filter(id => id !== this.member.id);
+          } else {
+            return [...ids, this.member.id];
+          }
+        });
+        console.log('Toggled like for member:', this.member.knownAs);
+      }
+    })
    }
 
    sendMessage() {
      console.log('Send message to:', this.member.knownAs);
-     // Message logic here
+    
    }
 }

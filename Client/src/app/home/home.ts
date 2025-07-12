@@ -4,11 +4,10 @@ import { RegisterComponent } from '../register/register';
 import { Account } from '../_services/account';
 import { RouterLink } from '@angular/router';
 import { VantaBackgroundComponent } from "../vanta-background/vanta-background";
-import { BirdsBackgroundComponent } from "../birds-background/birds-background";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, RegisterComponent, VantaBackgroundComponent, BirdsBackgroundComponent],
+  imports: [CommonModule, RouterLink, RegisterComponent, VantaBackgroundComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })

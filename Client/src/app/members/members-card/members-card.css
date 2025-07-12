@@ -1,20 +1,43 @@
+/* CSS Variables */
+:root {
+  --radius-xl: 16px;
+  --radius-full: 50px;
+  --transition: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --space-1: 0.25rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --surface: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-400: #94a3b8;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --primary: #667eea;
+  --primary-hover: #5a67d8;
+  --border: #e2e8f0;
+}
+
 /* Premium Member Card Design */
 .member-card {
   background: white;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transition: all var(--transition-slow);
   cursor: pointer;
   height: 100%;
-  border: 1px solid var(--border);
+  border: 1px solid #e5e7eb;
   position: relative;
   animation: fadeInUp 0.6s ease-out;
 }
 
 .member-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 /* Image Container */
@@ -79,8 +102,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-  height: 80px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  height: 100px;
   display: flex;
   align-items: end;
   padding: var(--space-4);
@@ -103,7 +126,7 @@
   position: absolute;
   bottom: var(--space-6);
   left: 50%;
-  transform: translateX(-50%) translateY(40px);
+  transform: translateX(-50%) translateY(50px);
   display: flex;
   gap: var(--space-3);
   opacity: 0;
@@ -117,18 +140,18 @@
 }
 
 .action-btn {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: white;
   transition: all var(--transition);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
@@ -186,7 +209,7 @@
 }
 
 .member-name {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 var(--space-3) 0;
@@ -207,7 +230,7 @@
   color: white;
   padding: var(--space-1) var(--space-4);
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   box-shadow: var(--shadow-sm);
   text-transform: uppercase;
@@ -216,7 +239,7 @@
 
 .member-location {
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   font-weight: 500;
   display: flex;
   align-items: center;
