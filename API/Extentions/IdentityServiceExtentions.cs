@@ -4,6 +4,7 @@ using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extentions;
@@ -30,6 +31,12 @@ public static class IdentityServiceExtensions
                     ValidateAudience = false
                 };
             });
+
+        services.AddAuthorizationBuilder()
+        
+            .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"))
+            .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+        
 
         return services;
     }
