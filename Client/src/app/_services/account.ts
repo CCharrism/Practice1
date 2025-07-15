@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
 import { User } from '../models/user';
@@ -18,7 +18,18 @@ export class Account {
  
   baseUrl = environment.apiUrl;
 
+ roles=computed(()=>{
+   const user =this.currentUser();
+   if(user && user.token){
+    const role=JSON.parse(atob(user.token.split('.')[1])).role;
+    return Array.isArray(role)? role: [role];
+   }
+   return []
+ })
+
+
   login(model: any) {
+    console.log(this.roles());
     return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
       map(user=>{
        if(user){

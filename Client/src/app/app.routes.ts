@@ -9,6 +9,8 @@ import { authGuard } from './_guards/authguard';
 import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { NotFound } from './not-found/not-found';
 import { EditMember } from './members/edit-member/edit-member';
+import { AdminPanel } from './admin/admin-panel/admin-panel';
+import { adminGuard } from './_guards/admin-guard';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -44,6 +46,9 @@ export const routes: Routes = [
                 path: 'member/edit', component: EditMember,
                 canActivate: [authGuard],
                 canDeactivate: [preventUnsavedChangesGuard]
+            },
+            {
+                path:'admin',component:AdminPanel,canActivate:[adminGuard]
             }
 
 
